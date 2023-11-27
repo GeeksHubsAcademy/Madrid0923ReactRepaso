@@ -3,6 +3,7 @@ import { CustomNav } from "../CustomNav/CustomNav"
 import { useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
 import "./Header.css"
+import { bringMovies } from "../../services/apiCalls"
 export const Header = () => {
 
     const location = useLocation()
@@ -10,7 +11,17 @@ export const Header = () => {
     const [criteria, setCriteria] = useState("")
 
     useEffect(()=>{
-        console.log(criteria)
+
+        if(criteria !== ""){
+            
+            bringMovies(criteria)
+                .then(
+                    result => {
+                        console.log(result.data.results)
+                    }
+                )
+                .catch(error => console.log(error))
+        }
     },[criteria])
 
     return(
@@ -23,7 +34,7 @@ export const Header = () => {
                     className="inputSearchDesign"
                     type="text"
                     name="criteria"
-                    onChange={()=>setCriteria(e.target.value)}
+                    onChange={(e)=>setCriteria(e.target.value)}
                 />
             }
 
