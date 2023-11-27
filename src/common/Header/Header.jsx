@@ -21,12 +21,9 @@ export const Header = () => {
     const [criteria, setCriteria] = useState("")
 
     useEffect(()=>{
-
-        if(criteria !== ""){
-            
-            //Guardo el criterio de búsqueda en REDUX
-            dispatch(add_search(criteria))
-        }
+ 
+        //Guardo el criterio de búsqueda en REDUX
+        dispatch(add_search(criteria))
     },[criteria])
 
     return(
