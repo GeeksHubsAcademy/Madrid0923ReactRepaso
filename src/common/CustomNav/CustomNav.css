@@ -1,0 +1,17 @@
+
+.customNavDesign {
+
+    color: white;
+    font-weight: bolder;
+
+    margin-right: 2em;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.customNavDesign:hover {
+
+    transition: 0.3s;
+    color: grey;
+}
