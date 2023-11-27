@@ -4,7 +4,17 @@ import { useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
 import "./Header.css"
 import { bringMovies } from "../../services/apiCalls"
+
+//Importaciones Redux..
+
+import { useDispatch} from 'react-redux'
+import { add_search } from "../../pages/searchSlice"
+
 export const Header = () => {
+
+    //Instancio REDUX en modo lectura
+
+    const dispatch = useDispatch();
 
     const location = useLocation()
 
@@ -14,13 +24,8 @@ export const Header = () => {
 
         if(criteria !== ""){
             
-            bringMovies(criteria)
-                .then(
-                    result => {
-                        console.log(result.data.results)
-                    }
-                )
-                .catch(error => console.log(error))
+            //Guardo el criterio de búsqueda en REDUX
+            dispatch(add_search(criteria))
         }
     },[criteria])
 
