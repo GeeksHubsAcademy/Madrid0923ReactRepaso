@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../userSlice";
 
 import { useNavigate } from "react-router-dom";
+import { validate } from "../../services/useFul";
 
 export const Login = () => {
   //INSTANCIO NAVIGATE
@@ -19,6 +20,11 @@ export const Login = () => {
     username: "",
     password: "",
   });
+
+  const [userError, setUserError] = useState({
+    usernameError: "",
+    passwordError: ""
+  })
 
   const [msg, setMsg] = useState("");
 
@@ -45,6 +51,19 @@ export const Login = () => {
       .catch((error) => console.log(error));
   };
 
+  const checkError = (e) => {
+
+    let error = "";
+
+    error = validate(e.target.name, e.target.value)
+
+    setUserError((prevState) => ({
+      ...prevState,
+      [e.target.name + 'Error']: error
+    }));
+
+  }
+
   return (
     <div className="loginDesign">
       {msg !== "" ? (
@@ -52,19 +71,23 @@ export const Login = () => {
       ) : (
         <>
           <CustomInput
-            design={"inputDesign"}
+            design={`inputDesign ${userError.usernameError !== '' ? 'inputDesignError' : ''}`}
             type={"text"}
             name={"username"}
             placeholder={""}
             functionWrite={inputHandler}
+            functionError={checkError}
           />
+          <div className="errorRedMsg">{userError.usernameError}</div>
           <CustomInput
-            design={"inputDesign"}
+            design={`inputDesign ${userError.passwordError !== '' ? 'inputDesignError' : ''}`}
             type={"password"}
             name={"password"}
             placeholder={""}
             functionWrite={inputHandler}
+            functionError={checkError}
           />
+          <div className="errorRedMsg">{userError.passwordError}</div>
           <div className="loginButtonDesign" onClick={logMe}>
             Login
           </div>

@@ -35,3 +35,8 @@
     transition: 0.3s;
     background-color: coral;
 }
+
+.errorRedMsg {
+
+    color: red;
+}
