@@ -1,57 +1,76 @@
+import { CustomNav } from "../CustomNav/CustomNav";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import "./Header.css";
+import { bringMovies } from "../../services/apiCalls";
 
-import { CustomNav } from "../CustomNav/CustomNav"
-import { useLocation } from "react-router-dom"
-import { useState, useEffect } from "react"
-import "./Header.css"
-import { bringMovies } from "../../services/apiCalls"
+import { useNavigate } from 'react-router-dom'
 
 //Importaciones Redux..
 
-import { useDispatch} from 'react-redux'
-import { add_search } from "../../pages/searchSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { add_search } from "../../pages/searchSlice";
+import { userData, logout } from "../../pages/userSlice";
 
 export const Header = () => {
 
-    //Instancio REDUX en modo lectura
+  //Instancio Navigate 
 
-    const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-    const location = useLocation()
+  //Instancio REDUX en modo lectura
 
-    const [criteria, setCriteria] = useState("")
+  const reduxUserData = useSelector(userData);
 
-    useEffect(()=>{
- 
-        //Guardo el criterio de búsqueda en REDUX
-        dispatch(add_search(criteria))
-    },[criteria])
+  //Instancio REDUX en modo escritura
 
-    return(
-        <div className="headerDesign">
+  const dispatch = useDispatch();
 
-            {
-                location.pathname === "/" &&
+  const location = useLocation();
 
-                <input 
-                    className="inputSearchDesign"
-                    type="text"
-                    name="criteria"
-                    onChange={(e)=>setCriteria(e.target.value)}
-                />
-            }
+  const [criteria, setCriteria] = useState("");
 
-            <CustomNav 
-                path="/"
-                titulo="Home" 
-            />
-            <CustomNav 
-                path="/login"
-                titulo="Login" 
-            />
-            <CustomNav 
-                path="/register"
-                titulo="Register" 
-            />
-        </div>
-    )
-}
+  useEffect(() => {
+    //Guardo el criterio de búsqueda en REDUX
+    dispatch(add_search(criteria));
+  }, [criteria]);
+
+  // useEffect(()=>{
+  //     console.log("yo estoy en el header", reduxUserData.credentials)
+  // }, [reduxUserData.credentials])
+
+  const logOutMe = () => {
+
+    dispatch(logout( {credentials : ""}))
+
+    navigate("/")
+    
+  }
+
+  return (
+    <div className="headerDesign">
+      {location.pathname === "/" && (
+        <input
+          className="inputSearchDesign"
+          type="text"
+          name="criteria"
+          onChange={(e) => setCriteria(e.target.value)}
+        />
+      )}
+
+      <CustomNav path="/" titulo="Home" />
+
+      {reduxUserData.credentials.token ? (
+        <>
+          <CustomNav path="/profile" titulo={reduxUserData.credentials.firstName} />
+          <div className="customNavDesign" onClick={logOutMe}>log out</div>
+        </>
+      ) : (
+        <>
+          <CustomNav path="/login" titulo="Login" />
+          <CustomNav path="/register" titulo="Register" />
+        </>
+      )}
+    </div>
+  );
+};

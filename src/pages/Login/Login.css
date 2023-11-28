@@ -7,6 +7,31 @@
     background-color: beige;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.loginButtonDesign {
+
+    height: 2.5em;
+    width: 14em;
+
+    cursor: pointer;
+    background-color: orange;
+    transition: 0.3s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-weight: bold;
+    border-radius: 1em;
+}
+
+.loginButtonDesign:hover {
+
+    transition: 0.3s;
+    background-color: coral;
 }
