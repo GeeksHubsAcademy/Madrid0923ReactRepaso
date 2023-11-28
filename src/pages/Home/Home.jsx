@@ -15,23 +15,28 @@ export const Home = () => {
   const [peliculas, setPeliculas] = useState([]);
 
   useEffect(() => {
-    console.log("antes de nada", criterioBusqueda.criteria)
     if (criterioBusqueda.criteria === "") {
       latestMovies()
         .then((result) => {
-            setPeliculas(result.data.results);
-          
+          setPeliculas(result.data.results);
         })
         .catch((error) => console.log(error));
     } else {
-      bringMovies(criterioBusqueda.criteria)
-        .then((result) => {
-          console.log(result.data.results);
-          if (result.data.results.length !== 0) {
-            setPeliculas(result.data.results);
-          }
-        })
-        .catch((error) => console.log(error));
+
+      const bringDebouncedMovies = setTimeout(() => {
+
+        bringMovies(criterioBusqueda.criteria)
+          .then((result) => {
+            if (result.data.results.length !== 0) {
+              setPeliculas(result.data.results);
+            }
+          })
+          .catch((error) => console.log(error));
+
+      }, 300);
+
+      return () => clearTimeout(bringDebouncedMovies)
+
     }
   }, [criterioBusqueda.criteria]);
 
