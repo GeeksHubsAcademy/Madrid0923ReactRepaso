@@ -35,7 +35,6 @@ export const Login = () => {
   const [msgError, setMsgError] = useState("");
 
   //Variable hookeada a useState para mi Modal
-  const [showModal, setShowModal] = useState(false);
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
