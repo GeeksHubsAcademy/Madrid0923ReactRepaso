@@ -9,12 +9,14 @@ import { login, userData } from "../userSlice";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../services/useFul";
 
+import { Modal } from "@mantine/core";
+
 export const Login = () => {
   //INSTANCIO NAVIGATE
   const navigate = useNavigate();
 
   //INSTANCIO RDX EN MODO LECTURA
-  const rdxUserData = useSelector(userData)
+  const rdxUserData = useSelector(userData);
 
   //INSTANCIO RDX EN MODO ESCRITURA
   const dispatch = useDispatch();
@@ -22,21 +24,25 @@ export const Login = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-  })
+  });
 
   const [userError, setUserError] = useState({
     usernameError: "",
-    passwordError: ""
-  })
+    passwordError: "",
+  });
 
-  const [msg, setMsg] = useState("")
-  const [msgError, setMsgError] = useState("")
+  const [msg, setMsg] = useState("");
+  const [msgError, setMsgError] = useState("");
 
-  useEffect(()=>{
-    if(rdxUserData.credentials.token){
-      navigate("/")
+  //Variable hookeada a useState para mi Modal
+  const [showModal, setShowModal] = useState(false);
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    if (rdxUserData.credentials.token) {
+      navigate("/");
     }
-  }, [rdxUserData])
+  }, [rdxUserData]);
 
   const inputHandler = (e) => {
     setUser((prevState) => ({
@@ -46,11 +52,9 @@ export const Login = () => {
   };
 
   const logMe = () => {
-
-    for (let elemento in userError){
-
-      if(userError[elemento] !== ""){
-        return 
+    for (let elemento in userError) {
+      if (userError[elemento] !== "") {
+        return;
       }
     }
 
@@ -67,22 +71,21 @@ export const Login = () => {
         }, 2000);
       })
       .catch((error) => {
-        setMsgError(error.response.data.message)        
+        setMsgError(error.response.data.message);
+        setOpened(true);
       });
   };
 
   const checkError = (e) => {
-
     let error = "";
 
-    error = validate(e.target.name, e.target.value)
+    error = validate(e.target.name, e.target.value);
 
     setUserError((prevState) => ({
       ...prevState,
-      [e.target.name + 'Error']: error
+      [e.target.name + "Error"]: error,
     }));
-
-  }
+  };
 
   return (
     <div className="loginDesign">
@@ -91,7 +94,9 @@ export const Login = () => {
       ) : (
         <>
           <CustomInput
-            design={`inputDesign ${userError.usernameError !== '' ? 'inputDesignError' : ''}`}
+            design={`inputDesign ${
+              userError.usernameError !== "" ? "inputDesignError" : ""
+            }`}
             type={"text"}
             name={"username"}
             placeholder={""}
@@ -100,7 +105,9 @@ export const Login = () => {
           />
           <div className="errorRedMsg">{userError.usernameError}</div>
           <CustomInput
-            design={`inputDesign ${userError.passwordError !== '' ? 'inputDesignError' : ''}`}
+            design={`inputDesign ${
+              userError.passwordError !== "" ? "inputDesignError" : ""
+            }`}
             type={"password"}
             name={"password"}
             placeholder={""}
@@ -108,10 +115,14 @@ export const Login = () => {
             functionError={checkError}
           />
           <div className="errorRedMsg">{userError.passwordError}</div>
-          <div className="errorRedMsg">{msgError}</div>
+          {/* <div className="errorRedMsg">{msgError}</div> */}
           <div className="loginButtonDesign" onClick={logMe}>
             Login
           </div>
+
+          <Modal opened={opened} centered onClose={() => setOpened(false)}>
+            {msgError}
+          </Modal>
         </>
       )}
     </div>
