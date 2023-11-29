@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { loginFunction } from "../../services/apiCalls";
 import "./Login.css";
 
-import { useDispatch } from "react-redux";
-import { login } from "../userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { login, userData } from "../userSlice";
 
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../services/useFul";
@@ -12,6 +12,9 @@ import { validate } from "../../services/useFul";
 export const Login = () => {
   //INSTANCIO NAVIGATE
   const navigate = useNavigate();
+
+  //INSTANCIO RDX EN MODO LECTURA
+  const rdxUserData = useSelector(userData)
 
   //INSTANCIO RDX EN MODO ESCRITURA
   const dispatch = useDispatch();
@@ -28,6 +31,12 @@ export const Login = () => {
 
   const [msg, setMsg] = useState("")
   const [msgError, setMsgError] = useState("")
+
+  useEffect(()=>{
+    if(rdxUserData.credentials.token){
+      navigate("/")
+    }
+  }, [rdxUserData])
 
   const inputHandler = (e) => {
     setUser((prevState) => ({
@@ -58,7 +67,7 @@ export const Login = () => {
         }, 2000);
       })
       .catch((error) => {
-        setMsgError(error.response.data.message)
+        setMsgError(error.response.data.message)        
       });
   };
 
