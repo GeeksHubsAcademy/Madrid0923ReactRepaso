@@ -19,14 +19,15 @@ export const Login = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-  });
+  })
 
   const [userError, setUserError] = useState({
     usernameError: "",
     passwordError: ""
   })
 
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState("")
+  const [msgError, setMsgError] = useState("")
 
   const inputHandler = (e) => {
     setUser((prevState) => ({
@@ -36,6 +37,14 @@ export const Login = () => {
   };
 
   const logMe = () => {
+
+    for (let elemento in userError){
+
+      if(userError[elemento] !== ""){
+        return 
+      }
+    }
+
     loginFunction(user)
       .then((result) => {
         //Ahora que ya tengo los datos del login, los guardo en RDX
@@ -48,7 +57,9 @@ export const Login = () => {
           navigate("/");
         }, 2000);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setMsgError(error.response.data.message)
+      });
   };
 
   const checkError = (e) => {
@@ -88,6 +99,7 @@ export const Login = () => {
             functionError={checkError}
           />
           <div className="errorRedMsg">{userError.passwordError}</div>
+          <div className="errorRedMsg">{msgError}</div>
           <div className="loginButtonDesign" onClick={logMe}>
             Login
           </div>

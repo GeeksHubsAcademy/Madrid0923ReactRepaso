@@ -14,8 +14,8 @@ export const validate = (type, value) => {
     case "password":
     case "pass":
     case "contraseña":
-      if (value.length < 8) {
-        return "Write 8 characters at least";
+      if (value.length < 6) {
+        return "Write 6 characters at least";
       } else {
         //Checking the password format....
 
