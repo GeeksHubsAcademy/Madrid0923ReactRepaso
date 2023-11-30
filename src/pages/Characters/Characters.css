@@ -1,0 +1,12 @@
+
+.charactersDesign {
+
+    height: 90vh;
+    width: 100vw;
+
+    background-color: goldenrod;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

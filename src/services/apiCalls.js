@@ -18,3 +18,8 @@ export const loginFunction = async (body) => {
 
     return await axios.post('https://dummyjson.com/auth/login', body)
 }
+
+export const bringCharacters = async (body) => {
+
+    return await axios.get(`https://rickandmortyapi.com/api/character/?page=2`)
+}

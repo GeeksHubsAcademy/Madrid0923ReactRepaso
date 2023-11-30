@@ -59,6 +59,7 @@ export const Header = () => {
       )}
 
       <CustomNav path="/" titulo="Home" />
+      <CustomNav path="/characters" titulo="Characters" />
 
       {reduxUserData.credentials.token ? (
         <>
