@@ -8,13 +8,10 @@ export const Characters = () => {
   const [elegido, setElegido] = useState({});
 
   const handleSelect = (e) => {
-    personajes.map(
-      personaje => {
-        if(personaje.id === parseInt(e.target.value)){
-          setElegido(personaje)
-        }
-      }
-    )
+
+    const selected = personajes.find(u => u.id === parseInt(e.target.value))
+    setElegido(selected)
+
   } 
 
   useEffect(() => {
