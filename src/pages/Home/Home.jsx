@@ -8,6 +8,7 @@ import { Modal } from "@mantine/core";
 import { useSelector } from "react-redux";
 import { searchData } from "../searchSlice";
 import { bringMovies, latestMovies } from "../../services/apiCalls";
+import { CustomCard } from "../../common/CustomCard/CustomCard";
 export const Home = () => {
   //Instancio Redux en modo lectura
 
@@ -45,8 +46,8 @@ export const Home = () => {
   return (
     <div className="homeDesign">
       {peliculas.length > 0 ? (
-        <div>
-          {peliculas.map((pelicula) => {
+        <div className="rosterDesign">
+          {peliculas.slice(0,9).map((pelicula) => {
             return (
               <div
                 key={pelicula.id}
@@ -56,7 +57,10 @@ export const Home = () => {
                   console.log(pelicula)
                 }}
               >
-                {pelicula.title}
+                <CustomCard 
+                  original_title={pelicula.original_title}
+                  poster={pelicula.poster_path}
+                />
               </div>
             );
           })}
